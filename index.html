@@ -8,10 +8,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
+        /* Global box-sizing for consistent layout calculation */
+        *, ::before, ::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F8F9FA; /* Fond clair, presque blanc, pour un aspect épuré */
             color: #343A40; /* Texte principal en gris foncé */
+            overflow-x: hidden; /* Empêche le défilement horizontal global */
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Playfair Display', serif; /* Police plus élégante pour les titres */
@@ -19,7 +25,7 @@
         }
         .header-bg {
             background-color: #1E3A8A; /* Bleu institutionnel du collège */
-            min-height: 80px; /* Hauteur de l'en-tête augmentée */
+            min-height: 96px; /* Hauteur de l'en-tête augmentée pour le logo plus grand */
             display: flex;
             align-items: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -99,7 +105,7 @@
         }
 
         section {
-            padding: 6rem 1rem; /* Plus d'espace pour le contenu */
+            padding: 6rem 1rem; /* Padding vertical et horizontal pour les sections */
             margin-bottom: 0;
             position: relative;
             z-index: 10;
@@ -112,19 +118,22 @@
             max-width: 1200px; /* Largeur de contenu légèrement augmentée */
             margin-left: auto;
             margin-right: auto;
+            /* Padding horizontal retiré ici car il est géré par la section parente */
         }
 
         /* Mobile navigation styling */
         #mobile-menu {
-            display: none;
             background-color: #1E3A8A; /* Même bleu que l'en-tête */
             position: absolute;
-            top: 80px; /* Hauteur de l'en-tête */
+            top: 96px; /* Hauteur de l'en-tête (mise à jour) */
             left: 0;
             width: 100%;
             z-index: 1000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 1rem 0;
+            display: none; /* Initiallement caché, géré par JS */
+            flex-direction: column; /* Force les liens à s'aligner verticalement */
+            align-items: center; /* Centre les liens horizontalement */
         }
         #mobile-menu a {
             padding: 0.75rem 1.5rem;
@@ -132,6 +141,7 @@
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: background-color 0.2s ease-in-out;
+            width: 100%; /* Les liens prennent toute la largeur du menu */
         }
         #mobile-menu a:last-child {
             border-bottom: none;
@@ -162,31 +172,7 @@
             background: linear-gradient(135deg, #E0F2FE 0%, #BFDBFE 100%); /* Dégradé de bleu très doux */
             padding: 8rem 1rem; /* Plus de padding pour la section d'accueil */
             position: relative;
-            overflow: hidden;
-        }
-        #home::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            left: -50px;
-            width: 200px;
-            height: 200px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-        }
-        #home::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            right: -80px;
-            width: 250px;
-            height: 250px;
-            background-color: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: 0;
+            overflow: hidden; /* Empêche le débordement des pseudo-éléments */
         }
         #home .container {
             position: relative;
@@ -202,6 +188,8 @@
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
+            max-width: 100%; /* S'assure que les images ne débordent pas */
+            height: auto; /* Maintient le ratio d'aspect */
         }
         .img-gallery img:hover {
             transform: scale(1.02);
@@ -248,9 +236,10 @@
     <header class="header-bg text-white fixed top-0 left-0 w-full z-50">
         <nav class="container mx-auto px-4 flex justify-between items-center py-4">
             <div class="flex items-center">
-                <!-- Logo du Collège Saint-Joseph -->
-                <img src="https://collegestjolaroche.fr/wp-content/uploads/2019/10/logo-full-1.png" alt="Logo Collège Saint-Joseph" class="h-14 mr-4">
-                <a href="#home" class="text-3xl font-extrabold tracking-tight hidden md:block">CDI Saint-Joseph</a>
+                <!-- Nouveau Logo CDI avec fond blanc, taille contrôlée et object-contain pour le ratio -->
+                <img src="https://files.catbox.moe/mh2dzi.png"
+                     alt="Logo CDI" class="h-14 md:h-24 w-auto object-contain mr-4 p-1 md:p-2 bg-white rounded-md shadow-md"
+                     onerror="this.onerror=null; this.src='https://placehold.co/100x56/FFFFFF/000000?text=CDI+Logo';">
             </div>
             <!-- Desktop Navigation -->
             <div class="hidden md:flex space-x-8">
@@ -272,28 +261,28 @@
                 </button>
             </div>
         </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <a href="#home" class="block">Accueil</a>
-            <a href="#about" class="block">Le CDI</a>
-            <a href="#news" class="block">Nouveautés</a>
-            <a href="#selections" class="block">Sélections</a>
-            <a href="#projects" class="block">Projets & Activités</a>
-            <a href="#resources" class="block">Ressources</a>
-            <a href="#catalog" class="block">Catalogue</a>
-            <a href="#contact" class="block">Contact</a>
+        <!-- Mobile Menu - Controlled by JS style.display -->
+        <div id="mobile-menu" class="md:hidden">
+            <a href="#home">Accueil</a>
+            <a href="#about">Le CDI</a>
+            <a href="#news">Nouveautés</a>
+            <a href="#selections">Sélections</a>
+            <a href="#projects">Projets & Activités</a>
+            <a href="#resources">Ressources</a>
+            <a href="#catalog">Catalogue</a>
+            <a href="#contact">Contact</a>
         </div>
     </header>
 
     <!-- Main Content Area -->
-    <main class="pt-[80px] pb-12"> <!-- Ajustement du padding-top pour la hauteur de l'en-tête -->
+    <main class="pt-[96px] pb-12"> <!-- Ajustement du padding-top pour la hauteur de l'en-tête (mise à jour) -->
         <!-- Home Section (Hero) -->
-        <section id="home" class="text-center">
-            <div class="container mx-auto px-4 py-16">
+        <section id="home" class="text-center py-16 px-4">
+            <div class="container mx-auto">
                 <h1 class="text-gray-900 text-5xl md:text-7xl font-black mb-6 leading-tight animate-fadeInScaleUp">
                     Bienvenue au <span class="text-[#60A5FA]">CDI</span> !
                 </h1>
-                <p class="text-gray-700 text-xl md:text-2xl font-light max-w-4xl mx-auto mb-12 opacity-0 animate-slideInUp" style="animation-delay: 0.3s;">
+                <p class="text-gray-700 text-xl md:text-2xl font-light max-w-4xl w-full mx-auto mb-12 opacity-0 animate-slideInUp" style="animation-delay: 0.3s;">
                     Votre <strong>Centre de Documentation et d'Information</strong> : un espace <strong>inspirant</strong> de lecture, de travail, de découverte et de partage. Venez explorer nos <strong>ressources</strong> et participer à nos <strong>activités passionnantes</strong> !
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center gap-6 opacity-0 animate-slideInUp" style="animation-delay: 0.6s;">
@@ -304,8 +293,8 @@
         </section>
 
         <!-- Le CDI Section -->
-        <section id="about">
-            <div class="container mx-auto px-4">
+        <section id="about" class="py-16 px-4">
+            <div class="container mx-auto">
                 <h2 class="section-title animate-slideInUp">Le CDI : Votre Centre <br>de <strong>Documentation</strong> et d'<strong>Information</strong></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div class="animate-slideInUp">
@@ -330,8 +319,8 @@
         </section>
 
         <!-- Nouveautés Section -->
-        <section id="news">
-            <div class="container mx-auto px-4">
+        <section id="news" class="py-16 px-4">
+            <div class="container mx-auto">
                 <h2 class="section-title animate-slideInUp">Nos <strong>Nouveautés</strong> & Coups de <strong>Cœur</strong></h2>
                 <p class="text-center text-lg text-gray-700 max-w-3xl mx-auto mb-10">
                     Découvrez les <strong>dernières acquisitions</strong> du CDI et nos <strong>coups de cœur</strong> du moment. De nouvelles histoires et connaissances vous attendent !
@@ -339,7 +328,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Nouveauté 1 -->
                     <div class="card p-6 flex flex-col items-center text-center animate-slideInUp" style="animation-delay: 0.2s;">
-                        <img src="https://placehold.co/120x180/60A5FA/ffffff?text=Roman" alt="Couverture Roman" class="rounded-lg shadow-md mb-4">
+                        <img src="https://placehold.co/120x180/60A5FA/ffffff?text=Roman" alt="Couverture Roman" class="rounded-lg shadow-md mb-4 max-w-full h-auto">
                         <h3 class="text-xl font-semibold text-[#1E3A8A] mb-2">L'Écho des Montagnes</h3>
                         <p class="text-gray-600 mb-2">Auteur : Clara Moreau</p>
                         <p class="text-sm text-gray-500 mb-3">Un roman d'aventure captivant sur la découverte de soi au cœur de paysages grandioses.</p>
@@ -347,7 +336,7 @@
                     </div>
                     <!-- Nouveauté 2 -->
                     <div class="card p-6 flex flex-col items-center text-center animate-slideInUp" style="animation-delay: 0.4s;">
-                        <img src="https://placehold.co/120x180/1E3A8A/ffffff?text=BD" alt="Couverture BD" class="rounded-lg shadow-md mb-4">
+                        <img src="https://placehold.co/120x180/1E3A8A/ffffff?text=BD" alt="Couverture BD" class="rounded-lg shadow-md mb-4 max-w-full h-auto">
                         <h3 class="text-xl font-semibold text-[#1E3A8A] mb-2">Les Gardiens du Temps T.1</h3>
                         <p class="text-gray-600 mb-2">Auteur : Léo Martel</p>
                         <p class="text-sm text-gray-500 mb-3">Une bande dessinée fantastique qui vous fera voyager à travers les époques.</p>
@@ -355,7 +344,7 @@
                     </div>
                     <!-- Nouveauté 3 -->
                     <div class="card p-6 flex flex-col items-center text-center animate-slideInUp" style="animation-delay: 0.6s;">
-                        <img src="https://placehold.co/120x180/60A5FA/ffffff?text=Doc" alt="Couverture Documentaire" class="rounded-lg shadow-md mb-4">
+                        <img src="https://placehold.co/120x180/60A5FA/ffffff?text=Doc" alt="Couverture Documentaire" class="rounded-lg shadow-md mb-4 max-w-full h-auto">
                         <h3 class="text-xl font-semibold text-[#1E3A8A] mb-2">Planète Mystère : Les Océans</h3>
                         <p class="text-gray-600 mb-2">Auteur : Dr. Emma Dubois</p>
                         <p class="text-sm text-gray-500 mb-3">Un documentaire illustré pour explorer les profondeurs des océans et leur biodiversité.</p>
@@ -368,7 +357,7 @@
                         <span style="color:#E91E63; font-size: 2.5rem;">💖</span> Notre <strong>Coup de Cœur</strong> du Mois : Mars <span style="color:#E91E63; font-size: 2.5rem;">💖</span>
                     </h3>
                     <div class="flex flex-col md:flex-row items-center justify-center gap-8">
-                        <img src="https://placehold.co/160x240/1E3A8A/ffffff?text=Le+Dragon+de+Jade" alt="Couverture Le Dragon de Jade" class="rounded-lg shadow-lg mb-4 md:mb-0">
+                        <img src="https://placehold.co/160x240/1E3A8A/ffffff?text=Le+Dragon+de+Jade" alt="Couverture Le Dragon de Jade" class="rounded-lg shadow-lg mb-4 md:mb-0 max-w-full h-auto">
                         <div class="text-left max-w-xl">
                             <h4 class="text-2xl font-bold text-[#3B82F6] mb-2">"Le Dragon de Jade"</h4>
                             <p class="text-lg text-gray-700 leading-relaxed">
@@ -387,8 +376,8 @@
         </section>
 
         <!-- Sélections Thématiques Section -->
-        <section id="selections">
-            <div class="container mx-auto px-4">
+        <section id="selections" class="py-16 px-4">
+            <div class="container mx-auto">
                 <h2 class="section-title animate-slideInUp">Nos <strong>Sélections Thématiques</strong></h2>
                 <p class="text-center text-lg text-gray-700 max-w-3xl mx-auto mb-10">
                     Explorez nos <strong>sélections de documents</strong> soigneusement préparées sur des thèmes <strong>variés et passionnants</strong>, conçues pour enrichir vos connaissances et stimuler votre curiosité.
@@ -450,14 +439,14 @@
                     </div>
                 </div>
                 <p class="text-center text-sm text-gray-500 mt-8">
-                    <strong>Note pour la responsable :</strong> Ces sélections peuvent être créées et gérées directement dans PMB, puis affichées ici via le <strong>portail</strong>.
+                    <strong>Note pour la responsable :</strong> Ces informations (livres, BD, magazines) peuvent être automatiquement synchronisées depuis PMB pour garantir leur <strong>actualité</strong>.
                 </p>
             </div>
         </section>
 
         <!-- Projets et Activités Section -->
-        <section id="projects">
-            <div class="container mx-auto px-4">
+        <section id="projects" class="py-16 px-4">
+            <div class="container mx-auto">
                 <h2 class="section-title animate-slideInUp">Nos <strong>Projets</strong> et <strong>Activités</strong></h2>
                 <p class="text-center text-lg text-gray-700 max-w-3xl mx-auto mb-10">
                     Découvrez les <strong>événements stimulants</strong> passés et à venir, et <strong>participez activement</strong> à la vie dynamique de votre CDI !
@@ -504,8 +493,8 @@
         </section>
 
         <!-- Ressources Pédagogiques Section -->
-        <section id="resources">
-            <div class="container mx-auto px-4">
+        <section id="resources" class="py-16 px-4">
+            <div class="container mx-auto">
                 <h2 class="section-title animate-slideInUp"><strong>Ressources Pédagogiques</strong> & <strong>Méthodologie</strong></h2>
                 <p class="text-center text-lg text-gray-700 max-w-3xl mx-auto mb-10">
                     Des <strong>outils essentiels</strong> et des <strong>conseils pratiques</strong> pour vous accompagner dans vos recherches, vos travaux scolaires et le développement de vos compétences.
@@ -552,10 +541,10 @@
         </section>
 
         <!-- Catalogue Section (Placeholder for PMB integration) -->
-        <section id="catalog" class="text-center">
-            <div class="container mx-auto px-4">
+        <section id="catalog" class="text-center py-16 px-4">
+            <div class="container mx-auto">
                 <h2 class="section-title animate-slideInUp">Notre <strong>Catalogue</strong> en Ligne</h2>
-                <p class="text-lg text-gray-700 max-w-2xl mx-auto mb-10">
+                <p class="text-lg text-gray-700 max-w-2xl w-full mx-auto mb-10">
                     Accédez au <strong>catalogue en ligne de PMB</strong> pour rechercher tous nos documents (livres, magazines, ressources numériques). Vous y trouverez la <strong>disponibilité</strong> de chaque document, son <strong>résumé détaillé</strong>, et sa <strong>localisation précise</strong> au CDI.
                 </p>
                 <div class="mb-8 animate-slideInUp">
@@ -572,8 +561,8 @@
         </section>
 
         <!-- Contact / FAQ Section -->
-        <section id="contact">
-            <div class="container mx-auto px-4">
+        <section id="contact" class="py-16 px-4">
+            <div class="container mx-auto">
                 <h2 class="section-title animate-slideInUp"><strong>Contactez-nous</strong> & <strong>FAQ</strong></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                     <div class="animate-slideInUp" style="animation-delay: 0.2s;">
@@ -655,10 +644,9 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                // Get the target element, adjust for fixed header height
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-                const headerOffset = 80; // Height of your fixed header
+                const headerOffset = 96; // Mise à jour de l'offset de l'en-tête
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -667,10 +655,10 @@
                     behavior: 'smooth'
                 });
 
-                // Close mobile menu after clicking a link
+                // Close mobile menu if open after clicking a link
                 const mobileMenu = document.getElementById('mobile-menu');
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
+                if (mobileMenu.style.display === 'flex') {
+                    mobileMenu.style.display = 'none';
                 }
             });
         });
@@ -678,20 +666,27 @@
         // Toggle mobile menu
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking outside (optional, but good UX)
-        document.addEventListener('click', function(event) {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            // If the menu is open AND the click is outside the menu AND outside the button
-            if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
-                mobileMenu.classList.add('hidden');
+            if (mobileMenu.style.display === 'flex') {
+                mobileMenu.style.display = 'none';
+            } else {
+                mobileMenu.style.display = 'flex';
             }
         });
 
-        // Intersectation Observer for section animations
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            
+            // If the menu is open AND the click target is NOT the menu itself AND NOT the menu button.
+            if (mobileMenu.style.display === 'flex' &&
+                !mobileMenu.contains(event.target) &&
+                !mobileMenuButton.contains(event.target)) {
+                mobileMenu.style.display = 'none';
+            }
+        });
+
+        // Intersection Observer for section animations
         const observerOptions = {
             root: null, // relative to the viewport
             rootMargin: '0px',
@@ -733,5 +728,4 @@
     </script>
 </body>
 </html>
-
 
