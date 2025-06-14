@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDI - Collège Saint-Joseph La Roche-Bernard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F8FC; /* Très léger bleu-gris pour le fond */
+            color: #333;
+        }
+        .header-bg {
+            background-color: #1A437C; /* Bleu foncé du logo */
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-link:hover {
+            transform: translateY(-2px);
+            color: #53B3E0; /* Bleu clair du logo pour le survol */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease-in-out;
+            opacity: 0; /* Initialement caché pour l'animation */
+            transform: translateY(20px); /* Démarrage légèrement en dessous pour l'animation */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .btn-primary {
+            background-color: #53B3E0; /* Bleu clair du logo pour les boutons primaires */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #3AA1D9; /* Bleu légèrement plus foncé pour le survol du bouton */
+        }
+        .section-title {
+            color: #1A437C; /* Bleu foncé du logo */
+            border-bottom: 2px solid #53B3E0; /* Bleu clair du logo pour la bordure */
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+        }
+        /* Mobile navigation styling */
+        #mobile-menu {
+            display: none;
+        }
+        @media (max-width: 767px) {
+            #mobile-menu.hidden {
+                display: none;
+            }
+            #mobile-menu:not(.hidden) {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 64px; /* Ajuster en fonction de la hauteur de l'en-tête */
+                left: 0;
+                width: 100%;
+                background-color: #1A437C; /* Bleu foncé du logo */
+                padding: 1rem 0;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            #mobile-menu a {
+                padding: 0.75rem 1.5rem;
+                color: white;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            #mobile-menu a:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Animation pour le titre principal */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Animation pour les cartes */
+        @keyframes cardFadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card.animate-in {
+            animation: cardFadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="header-bg text-white shadow-lg fixed top-0 left-0 w-full z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <!-- Logo du Collège Saint-Joseph -->
+                <img src="https://collegestjolaroche.fr/wp-content/uploads/2019/10/logo-full-1.png" alt="Logo Collège Saint-Joseph" class="h-10 mr-3">
+                <a href="#home" class="text-2xl font-bold tracking-tight">CDI Saint-Joseph</a>
+            </div>
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="nav-link text-lg font-semibold">Accueil</a>
+                <a href="#about" class="nav-link text-lg font-semibold">Le CDI</a>
+                <a href="#news" class="nav-link text-lg font-semibold">Nouveautés</a>
+                <a href="#selections" class="nav-link text-lg font-semibold">Sélections</a>
+                <a href="#projects" class="nav-link text-lg font-semibold">Projets & Activités</a>
+                <a href="#resources" class="nav-link text-lg font-semibold">Ressources</a>
+                <a href="#catalog" class="nav-link text-lg font-semibold">Catalogue</a>
+                <a href="#contact" class="nav-link text-lg font-semibold">Contact</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#home" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Accueil</a>
+            <a href="#about" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Le CDI</a>
+            <a href="#news" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Nouveautés</a>
+            <a href="#selections" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Sélections</a>
+            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Projets & Activités</a>
+            <a href="#resources" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Ressources</a>
+            <a href="#catalog" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Catalogue</a>
+            <a href="#contact" class="block py-2 px-4 text-sm hover:bg-[#002D58]">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="pt-20 pb-8"> <!-- Added padding-top to account for fixed header -->
+        <!-- Home Section -->
+        <section id="home" class="container mx-auto px-4 py-12 text-center bg-white rounded-lg shadow-md mb-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 animate-fadeInUp">Bienvenue au CDI !</h1>
+            <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8">
+                Votre Centre de Documentation et d'Information est un espace dynamique de lecture, de travail, de découverte et de partage. Venez explorer nos ressources et participer à nos activités !
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="https://placehold.co/120x80/EEEEEE/333333?text=Nouveautés" alt="Nouveautés" class="rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Découvrez nos nouveautés</h3>
+                    <p class="text-gray-600 text-center">Romans, BD, documentaires, magazines... explorez nos dernières acquisitions.</p>
+                    <a href="#news" class="btn-primary mt-4 inline-block">Voir les nouveautés</a>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="https://placehold.co/120x80/EEEEEE/333333?text=Recherche" alt="Recherche" class="rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Rechercher un document</h3>
+                    <p class="text-gray-600 text-center">Accédez à notre catalogue pour trouver ce dont vous avez besoin.</p>
+                    <a href="#catalog" class="btn-primary mt-4 inline-block">Accéder au catalogue</a>
+                </div>
+                <div class="card p-6 flex flex-col items-center md:col-span-2 lg:col-span-1">
+                    <img src="https://placehold.co/120x80/EEEEEE/333333?text=Activités" alt="Activités" class="rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Participez à nos activités</h3>
+                    <p class="text-gray-600 text-center">Clubs, ateliers, expositions... il y a toujours quelque chose à faire au CDI !</p>
+                    <a href="#projects" class="btn-primary mt-4 inline-block">Voir l'agenda</a>
+                </div>
+            </div>
+            <img src="https://placehold.co/800x400/A78BFA/ffffff?text=Photo+du+CDI" alt="Image du CDI" class="rounded-xl shadow-lg mx-auto w-full max-w-4xl">
+        </section>
+
+        <!-- Le CDI Section -->
+        <section id="about" class="container mx-auto px-4 py-12 bg-white rounded-lg shadow-md mb-8">
+            <h2 class="text-3xl font-bold section-title">Le CDI : Votre Centre de Documentation et d'Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Qu'est-ce que le CDI ?</h3>
+                    <p class="text-gray-700 mb-4">
+                        Le CDI est un lieu ouvert à tous les élèves et personnels du collège. C'est un espace de travail, de lecture, de recherche et de culture. Vous y trouverez des livres, des magazines, des ressources numériques pour vos cours et vos loisirs. La documentaliste est là pour vous accueillir, vous guider dans vos recherches et vous accompagner dans vos projets.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4 mt-6">Horaires d'ouverture</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Lundi : 8h30 - 12h00 / 13h00 - 17h00</li>
+                        <li>Mardi : 8h30 - 12h00 / 13h00 - 17h00</li>
+                        <li>Mercredi : 8h30 - 12h00</li>
+                        <li>Jeudi : 8h30 - 12h00 / 13h00 - 17h00</li>
+                        <li>Vendredi : 8h30 - 12h00 / 13h00 - 16h00</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Règlement intérieur</h3>
+                    <p class="text-gray-700 mb-4">
+                        Pour que le CDI reste un espace agréable pour tous, merci de respecter ces quelques règles :
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Maintenir le calme et le silence pour respecter le travail de chacun.</li>
+                        <li>Prendre soin des documents et du matériel mis à disposition.</li>
+                        <li>Ranger les documents après consultation.</li>
+                        <li>Respecter les règles d'utilisation des postes informatiques.</li>
+                        <li>Les sacs sont à déposer aux emplacements prévus.</li>
+                    </ul>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4 mt-6">Contact</h3>
+                    <p class="text-gray-700">
+                        Documentaliste : Mme [Nom de la documentaliste]<br>
+                        Email : <a href="mailto:cdi.stjoseph@college.fr" class="text-[#1A437C] hover:underline">cdi.stjoseph@college.fr</a><br>
+                        Téléphone Collège : [Numéro de téléphone du collège]
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nouveautés Section -->
+        <section id="news" class="container mx-auto px-4 py-12 bg-white rounded-lg shadow-md mb-8">
+            <h2 class="text-3xl font-bold section-title">Nouveautés du CDI</h2>
+            <p class="text-lg text-gray-700 mb-4">Découvrez les dernières acquisitions et nos coups de cœur du moment !</p>
+            <p class="text-sm text-gray-500 mb-8">
+                **Note pour la responsable :** Ces informations (livres, BD, magazines) peuvent être automatiquement synchronisées depuis PMB pour garantir leur actualité.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Exemple de nouvelle acquisition 1 -->
+                <div class="card p-4 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x150/53B3E0/ffffff?text=Livre+1" alt="Couverture Livre 1" class="rounded-lg shadow mb-3">
+                    <h3 class="text-xl font-semibold text-gray-800">Le mystère des étoiles</h3>
+                    <p class="text-gray-600">Auteur : Jeanne Dupont</p>
+                    <p class="text-sm text-gray-500 mb-2">Un roman captivant sur l'exploration spatiale et l'amitié.</p>
+                    <span class="text-sm font-bold text-[#1A437C]">Roman - Côte : R DUP</span>
+                </div>
+                <!-- Exemple de nouvelle acquisition 2 -->
+                <div class="card p-4 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x150/1A437C/ffffff?text=BD+2" alt="Couverture BD 2" class="rounded-lg shadow mb-3">
+                    <h3 class="text-xl font-semibold text-gray-800">Aventures au temps des dinosaures T.2</h3>
+                    <p class="text-gray-600">Auteur : Marc Dubois</p>
+                    <p class="text-sm text-gray-500 mb-2">La suite des péripéties de Léo et Mia à l'ère préhistorique.</p>
+                    <span class="text-sm font-bold text-[#1A437C]">BD - Côte : BD DUB</span>
+                </div>
+                <!-- Exemple de nouvelle acquisition 3 -->
+                <div class="card p-4 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x150/53B3E0/ffffff?text=Doc+3" alt="Couverture Doc 3" class="rounded-lg shadow mb-3">
+                    <h3 class="text-xl font-semibold text-gray-800">L'incroyable monde des insectes</h3>
+                    <p class="text-gray-600">Auteur : Sophie Martin</p>
+                    <p class="text-sm text-gray-500 mb-2">Un documentaire richement illustré pour tout savoir sur les insectes.</p>
+                    <span class="text-sm font-bold text-[#1A437C]">Documentaire - Côte : 595.7 MAR</span>
+                </div>
+                <!-- Coup de cœur du mois -->
+                <div class="card p-4 col-span-1 md:col-span-2 lg:col-span-3 text-center bg-[#E6F5FC]">
+                    <h3 class="text-2xl font-bold text-[#0A223E] mb-3">💖 Le coup de cœur du mois : "Le voyage de Luna" 💖</h3>
+                    <img src="https://placehold.co/120x180/53B3E0/ffffff?text=Coup+de+coeur" alt="Couverture Coup de coeur" class="rounded-lg shadow mb-4 mx-auto">
+                    <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+                        "Le voyage de Luna" est un roman poétique qui nous emmène aux confins de l'imagination. Une histoire touchante sur la résilience et la découverte de soi, parfaite pour s'évader. À ne pas manquer !
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sélections Thématiques Section -->
+        <section id="selections" class="container mx-auto px-4 py-12 bg-white rounded-lg shadow-md mb-8">
+            <h2 class="text-3xl font-bold section-title">Nos Sélections Thématiques</h2>
+            <p class="text-lg text-gray-700 mb-4">Explorez nos sélections de documents sur des thèmes variés et passionnants.</p>
+            <p class="text-sm text-gray-500 mb-8">
+                **Note pour la responsable :** Ces sélections peuvent être créées et gérées directement dans PMB, puis affichées ici via le portail.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Prix Littéraires Jeunesse</h3>
+                    <p class="text-gray-600 mb-4">Découvrez les romans et BD récompensés par les prix littéraires de l'année.</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>"Le passeur" - Lois Lowry</li>
+                        <li>"La déclaration" - Gemma Malley</li>
+                        <li>"Coeur Cerise" - Cathy Cassidy</li>
+                    </ul>
+                    <a href="#" class="text-[#1A437C] hover:underline mt-4 inline-block">Voir la sélection complète</a>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Orientation & Métiers</h3>
+                    <p class="text-gray-600 mb-4">Des ressources pour vous aider à réfléchir à votre avenir et découvrir des métiers.</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>Dossiers ONISEP</li>
+                        <li>Livres sur les filières professionnelles</li>
+                        <li>Témoignages de professionnels</li>
+                    </ul>
+                    <a href="#" class="text-[#1A437C] hover:underline mt-4 inline-block">Voir la sélection complète</a>
+                </div>
+                <div class="card p-6 md:col-span-2">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Thème du mois : Le Développement Durable</h3>
+                    <p class="text-gray-600 mb-4">Une sélection de documents pour comprendre les enjeux environnementaux et agir au quotidien.</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>"Un monde sans fin" - Jean-Marc Jancovici</li>
+                        <li>Magazines : "La Hulotte", "Science & Vie Junior" (numéros spéciaux)</li>
+                        <li>Documentaires sur le climat et la biodiversité</li>
+                    </ul>
+                    <a href="#" class="text-[#1A437C] hover:underline mt-4 inline-block">Voir la sélection complète</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projets et Activités Section -->
+        <section id="projects" class="container mx-auto px-4 py-12 bg-white rounded-lg shadow-md mb-8">
+            <h2 class="text-3xl font-bold section-title">Projets et Activités du CDI</h2>
+            <p class="text-lg text-gray-700 mb-8">Découvrez nos événements passés et à venir, et participez à la vie du CDI !</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Club Lecture "Les Mots Voyageurs"</h3>
+                    <p class="text-gray-600 mb-4">
+                        Rejoignez-nous pour partager vos coups de cœur, découvrir de nouveaux horizons littéraires et participer à des défis lecture. Ouvert à tous les niveaux !
+                    </p>
+                    <p class="text-sm text-gray-500">Réunion tous les jeudis à 13h00 au CDI.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Exposition : "L'Odyssée de l'Information"</h3>
+                    <p class="text-gray-600 mb-4">
+                        Découvrez l'histoire de l'information, de l'imprimerie aux fake news, à travers une exposition interactive créée par les élèves de 4ème.
+                    </p>
+                    <p class="text-sm text-gray-500">Du 15 au 30 mars 2025, au CDI.</p>
+                </div>
+                <div class="card p-6 md:col-span-2">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Semaine de la Presse et des Médias</h3>
+                    <p class="text-gray-600 mb-4">
+                        Chaque année, le CDI participe activement à la Semaine de la Presse. Au programme : ateliers d'éducation aux médias, rencontre avec un journaliste local, décryptage de l'info.
+                    </p>
+                    <img src="https://placehold.co/400x200/53B3E0/ffffff?text=Activité+CDI" alt="Activité CDI" class="rounded-lg shadow mt-4 mx-auto">
+                </div>
+            </div>
+        </section>
+
+        <!-- Ressources Pédagogiques Section -->
+        <section id="resources" class="container mx-auto px-4 py-12 bg-white rounded-lg shadow-md mb-8">
+            <h2 class="text-3xl font-bold section-title">Ressources Pédagogiques & Méthodologie</h2>
+            <p class="text-lg text-gray-700 mb-8">Des outils et des conseils pour vous aider dans vos recherches et vos travaux scolaires.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Méthodologie de recherche documentaire</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Comment formuler une question de recherche ?</a></li>
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Trouver les bons mots-clés</a></li>
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Évaluer la fiabilité d'une source</a></li>
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Citer ses sources (bibliographie)</a></li>
+                    </ul>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Fiches outils et tutoriels</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Faire une carte mentale</a></li>
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Préparer un exposé oral</a></li>
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Présenter un diaporama efficace</a></li>
+                        <li><a href="#" class="text-[#1A437C] hover:underline">Utiliser un logiciel de traitement de texte</a></li>
+                    </ul>
+                </div>
+                <div class="card p-6 md:col-span-2">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Liens utiles pour vos recherches</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li><a href="https://www.onisep.fr/" target="_blank" class="text-[#1A437C] hover:underline">ONISEP (Orientation)</a></li>
+                        <li><a href="https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal" target="_blank" class="text-[#1A437C] hover:underline">Wikipédia (pour une première approche)</a></li>
+                        <li><a href="https://www.lumni.fr/" target="_blank" class="text-[#1A437C] hover:underline">Lumni (Ressources éducatives)</a></li>
+                        <li><a href="https://www.arte.tv/" target="_blank" class="text-[#1A437C] hover:underline">Arte (Documentaires culturels)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catalogue Section (Placeholder for PMB integration) -->
+        <section id="catalog" class="container mx-auto px-4 py-12 text-center bg-[#E6F5FC] rounded-lg shadow-md mb-8">
+            <h2 class="text-3xl font-bold section-title">Catalogue du CDI</h2>
+            <p class="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+                Accédez au **catalogue en ligne de PMB** pour rechercher tous nos documents (livres, magazines, ressources numériques).
+                Vous y trouverez la disponibilité de chaque document, son résumé, et sa localisation précise.
+            </p>
+            <div class="mb-8">
+                <!-- Ici, le lien direct vers l'OPAC de PMB serait idéalement intégré -->
+                <a href="[URL_VERS_OPAC_PMB_ICI]" target="_blank" class="btn-primary inline-block text-lg">
+                    Accéder au Catalogue PMB
+                </a>
+            </div>
+            <p class="text-sm text-gray-500">
+                **(Note pour la responsable :** Ce bouton mènerait directement à l'interface de recherche de PMB, offrant une expérience complète aux utilisateurs.)
+            </p>
+        </section>
+
+        <!-- Contact / FAQ Section -->
+        <section id="contact" class="container mx-auto px-4 py-12 bg-white rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold section-title">Contact & FAQ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Nous contacter</h3>
+                    <p class="text-gray-700 mb-4">Vous avez une question ? N'hésitez pas à nous envoyer un message !</p>
+                    <form class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Votre Nom</label>
+                            <input type="text" id="name" name="name"
+                                   class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Votre Email</label>
+                            <input type="email" id="email" name="email"
+                                   class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Votre Message</label>
+                            <textarea id="message" name="message" rows="5"
+                                      class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Envoyer le message</button>
+                    </form>
+                    <p class="text-sm text-gray-500 mt-4">
+                        **(Note pour la responsable :** Ce formulaire nécessite une configuration côté serveur pour envoyer réellement les e-mails. PMB peut potentiellement proposer des modules de contact intégrés.)
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Foire Aux Questions (FAQ)</h3>
+                    <div class="space-y-4">
+                        <div class="border-b pb-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">Puis-je venir au CDI pendant les récréations ?</h4>
+                            <p class="text-gray-700">Oui, le CDI est souvent ouvert pendant les récréations du matin et de l'après-midi, dans la limite des places disponibles et si un adulte est présent pour vous accueillir.</p>
+                        </div>
+                        <div class="border-b pb-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">Combien de livres puis-je emprunter et pour combien de temps ?</h4>
+                            <p class="text-gray-700">Vous pouvez emprunter jusqu'à 3 documents (livres, BD, magazines) pour une durée de 3 semaines. N'hésitez pas à demander une prolongation si besoin !</p>
+                        </div>
+                        <div class="border-b pb-4">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">Puis-je imprimer au CDI ?</h4>
+                            <p class="text-gray-700">Oui, il est possible d'imprimer vos documents scolaires. Adressez-vous à la documentaliste pour connaître les modalités et le coût éventuel (très faible ou gratuit pour le scolaire).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="header-bg text-white py-6 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 CDI Collège Saint-Joseph La Roche-Bernard. Tous droits réservés.</p>
+            <p class="text-sm mt-2">
+                Conçu avec <a href="https://tailwindcss.com/" target="_blank" class="text-[#53B3E0] hover:underline">Tailwind CSS</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu after clicking a link
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Toggle mobile menu
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside (optional, but good UX)
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Animate cards sequentially on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('#home .card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+                }, 100 + (index * 150)); // Délai décalé pour chaque carte
+            });
+        });
+    </script>
+</body>
+</html>
+
+
