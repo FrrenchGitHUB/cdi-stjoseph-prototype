@@ -71,6 +71,13 @@
             font-weight: 600;
             transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Ajout pour permettre au texte du bouton de se couper */
+            word-break: break-word;
+            white-space: normal;
+            text-align: center; /* Centre le texte dans le bouton s'il se coupe */
+            display: inline-flex; /* Pour centrer le contenu verticalement si l'icône est présente */
+            align-items: center; /* Pour centrer le contenu verticalement si l'icône est présente */
+            justify-content: center; /* Pour centrer le contenu horizontalement */
         }
         .btn-primary:hover {
             background-color: #2563EB; /* Bleu plus foncé au survol */
@@ -229,6 +236,31 @@
             color: #4A5568;
             line-height: 1.6;
         }
+
+        /* Custom CSS for card titles to allow word breaks */
+        .card h3 {
+            word-break: break-word; /* Allows long words to break to the next line if necessary */
+            white-space: normal; /* Ensures text wraps naturally */
+            /* Removed flex-1 min-w-0 from inner span, now h3 itself should handle wrapping */
+        }
+
+        /* Custom CSS for horaires list items to allow wrapping */
+        .horaires-list li {
+            flex-wrap: wrap; /* Allows items within the flex container to wrap to the next line */
+            line-height: 1.5; /* Ajoute un peu plus d'espace entre les lignes si elles se coupent */
+        }
+        .horaires-list li strong {
+            /* Ensure strong tags don't prevent wrapping within themselves if they contain long phrases */
+            display: inline-block; /* allows the strong tag to wrap better */
+        }
+
+        /* Custom CSS for useful links text to ensure wrapping */
+        .useful-links-text {
+            flex: 1; /* Allows the text to take available space */
+            min-width: 0; /* Important for flex items to shrink below their content size */
+            word-break: break-word; /* Breaks long words */
+            white-space: normal; /* Ensures text wraps naturally */
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -237,7 +269,7 @@
         <nav class="container mx-auto px-4 flex justify-between items-center py-4">
             <div class="flex items-center">
                 <!-- Nouveau Logo CDI avec fond blanc, taille contrôlée et object-contain pour le ratio -->
-                <img src="https://files.catbox.moe/mh2dzi.png"
+                <img src="https://content-fetcher.sandbox.google.com/files/uploaded:image.png-957f6f28-4ca6-443a-a0be-9aebe6182e4a"
                      alt="Logo CDI" class="h-14 md:h-24 w-auto object-contain mr-4 p-1 md:p-2 bg-white rounded-md shadow-md"
                      onerror="this.onerror=null; this.src='https://placehold.co/100x56/FFFFFF/000000?text=CDI+Logo';">
             </div>
@@ -303,7 +335,7 @@
                             Le CDI est un lieu <strong>privilégié</strong> ouvert à tous les élèves et personnels du collège. C'est un espace <strong>moderne</strong> et <strong>collaboratif</strong> dédié au travail, à la lecture, à la recherche et à la culture. Vous y trouverez une <strong>riche collection</strong> de livres, de magazines, ainsi que des <strong>ressources numériques</strong> variées pour approfondir vos cours et enrichir vos loisirs. La documentaliste est toujours disponible pour vous <strong>accueillir chaleureusement</strong>, vous <strong>guider</strong> dans vos recherches et vous <strong>accompagner</strong> dans tous vos projets éducatifs ou personnels.
                         </p>
                         <h3 class="text-3xl font-bold mb-4 mt-8 text-[#1E3A8A]">Horaires d'ouverture</h3>
-                        <ul class="text-gray-700 space-y-3 text-lg">
+                        <ul class="text-gray-700 space-y-3 text-lg horaires-list">
                             <li class="flex items-center"><svg class="w-6 h-6 text-[#3B82F6] mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd"></path></svg>Lundi : <strong>8h30 - 12h00</strong> / <strong>13h00 - 17h00</strong></li>
                             <li class="flex items-center"><svg class="w-6 h-6 text-[#3B82F6] mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd"></path></svg>Mardi : <strong>8h30 - 12h00</strong> / <strong>13h00 - 17h00</strong></li>
                             <li class="flex items-center"><svg class="w-6 h-6 text-[#3B82F6] mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd"></path></svg>Mercredi : <strong>8h30 - 12h00</strong></li>
@@ -506,34 +538,34 @@
                             Méthodologie de <strong>Recherche Documentaire</strong>
                         </h3>
                         <ul class="text-gray-700 space-y-3">
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Comment formuler une question de recherche ?</a></li>
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Trouver les bons mots-clés</a></li>
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Évaluer la fiabilité d'une source</a></li>
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Citer ses sources (bibliographie)</a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Comment formuler une question de recherche ?</span></a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Trouver les bons mots-clés</span></a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Évaluer la fiabilité d'une source</span></a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Citer ses sources (bibliographie)</span></a></li>
                         </ul>
                     </div>
                     <div class="card p-6 animate-slideInUp" style="animation-delay: 0.4s;">
                         <h3 class="text-2xl font-bold text-[#1E3A8A] mb-4 flex items-center">
                             <svg class="w-8 h-8 text-[#3B82F6] mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 2v6h6V6H6zm3.5 10A1.5 1.5 0 1012 16.5 1.5 1.5 0 009.5 15z" clip-rule="evenodd"></path></svg>
-                            Fiches <strong>Outils</strong> et <strong>Tutoriels</strong>
+                            Fiches Outils et <strong>Tutoriels</strong>
                         </h3>
                         <ul class="text-gray-700 space-y-3">
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Faire une carte mentale efficace</a></li>
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Préparer un exposé oral percutant</a></li>
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Présenter un diaporama efficace</a></li>
-                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Utiliser un logiciel de traitement de texte</a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Faire une carte mentale efficace</span></a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Préparer un exposé oral percutant</span></a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Présenter un diaporama efficace</span></a></li>
+                            <li><a href="#" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Utiliser un logiciel de traitement de texte</span></a></li>
                         </ul>
                     </div>
                     <div class="card p-6 md:col-span-full lg:col-span-1 animate-slideInUp" style="animation-delay: 0.6s;">
                         <h3 class="text-2xl font-bold text-[#1E3A8A] mb-4 flex items-center">
                             <svg class="w-8 h-8 text-[#3B82F6] mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12 6V4a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2h6a2 2 0 002-2V8a2 2 0 00-2-2h-2zm-6 3h5v5H6V9z" clip-rule="evenodd"></path></svg>
-                            <strong>Liens Utiles</strong> pour vos Recherches
+                            Liens Utiles pour vos Recherches
                         </h3>
                         <ul class="text-gray-700 space-y-3">
-                            <li><a href="https://www.onisep.fr/" target="_blank" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>ONISEP (<span class="font-semibold">Orientation scolaire</span>)</a></li>
-                            <li><a href="https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal" target="_blank" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>Wikipédia (pour une <strong>première approche fiable</strong>)</a></li>
-                            <li><a href="https://www.lumni.fr/" target="_blank" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>Lumni (<span class="font-semibold">Ressources éducatives</span> variées)</a></li>
-                            <li><a href="https://www.arte.tv/" target="_blank" class="text-[#3B82F6] hover:underline flex items-center"><svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>Arte (<span class="font-semibold">Documentaires culturels</span> de qualité)</a></li>
+                            <li><a href="https://www.onisep.fr/" target="_blank" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="useful-links-text">ONISEP (<span class="font-semibold">Orientation scolaire</span>)</span></a></li>
+                            <li><a href="https://fr.wikipedia.org/" target="_blank" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Wikipédia (pour une <strong>première approche fiable</strong>)</span></a></li>
+                            <li><a href="https://www.lumni.fr/" target="_blank" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Lumni (<span class="font-semibold">Ressources éducatives</span> variées)</span></a></li>
+                            <li><a href="https://www.arte.tv/" target="_blank" class="text-[#3B82F6] hover:underline flex items-start"><svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="useful-links-text">Arte (<span class="font-semibold">Documentaires culturels</span> de qualité)</span></a></li>
                         </ul>
                     </div>
                 </div>
